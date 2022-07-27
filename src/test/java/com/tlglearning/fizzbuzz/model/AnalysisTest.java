@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.EnumSet;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 
 class AnalysisTest {
 
@@ -63,12 +61,29 @@ class AnalysisTest {
   @ParameterizedTest
   @ValueSource(ints = {-1, -3, -5, -15})
   void analyze_negative(int value){
-    try{
-      analysis.analyze(value);
-      //If we reach this line, it didnt throw exception
-      //it should jump to catch immediately after invokation above
-    }catch(IllegalArgumentException e){
-      //Do nothing; this is expected behavior
+//    try{
+//      analysis.analyze(value);
+//      //If we reach this line, it didnt throw exception
+//      //it should jump to catch immediately after invokation above
+//    }catch(IllegalArgumentException e){
+//      //Do nothing; this is expected behavior
+//    }
+  assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
+  //first creating th InvalidInvocation
+  }
+
+  private class InvalidInvocation implements Executable {
+
+    private final int value;
+
+    public InvalidInvocation(int value) {
+      this.value = value;
     }
+
+    @Override
+    public void execute() throws Throwable{
+      analysis.analyze(value);
+    }
+
   }
 }
