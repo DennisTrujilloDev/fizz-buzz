@@ -68,22 +68,8 @@ class AnalysisTest {
 //    }catch(IllegalArgumentException e){
 //      //Do nothing; this is expected behavior
 //    }
-  assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
+  assertThrows(IllegalArgumentException.class, new InvalidInvocation(analysis, value));
   //first creating th InvalidInvocation
   }
 
-  private class InvalidInvocation implements Executable {
-
-    private final int value;
-
-    public InvalidInvocation(int value) {
-      this.value = value;
-    }
-
-    @Override
-    public void execute() throws Throwable{
-      analysis.analyze(value);
-    }
-
-  }
 }
