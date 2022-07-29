@@ -45,20 +45,18 @@ class AnalysisTest {
   @ParameterizedTest
   @ValueSource(ints = {-1, -3, -5, -15})
   void analyze_negative(int value) {
-    Executable invalidInvocation = new Executable() {
 
 //      private final int value;
       //we dont need this line b/c we have value passed in as param
 //      public InvalidInvocation(int value) {
 //        this.value = value;
 //      }
+    assertThrows(IllegalArgumentException.class, new Executable(){
       @Override
       public void execute() throws Throwable {
         analysis.analyze(value);
       }
-
-    };
-    assertThrows(IllegalArgumentException.class, invalidInvocation);
+    });
   }
 
 }
